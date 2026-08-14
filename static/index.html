@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>Scout — photoshoot location finder</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <aside id="sidebar">
+      <header class="brand">
+        <div class="logo">◐</div>
+        <div>
+          <h1>Scout</h1>
+          <p class="tag">photoshoot location finder</p>
+        </div>
+        <button id="addBtn" class="add-btn" title="Add a location">+ Capture</button>
+      </header>
+
+      <div class="controls">
+        <input id="search" type="search" placeholder="Search a setting… (neon, golden hour, bridal)" autocomplete="off" />
+        <div id="chips" class="chips"></div>
+        <div class="sliders">
+          <label>Warmth
+            <input id="fWarm" type="range" min="-100" max="100" value="-100" />
+            <span id="fWarmV" class="muted">any</span>
+          </label>
+          <label>Min brightness
+            <input id="fBright" type="range" min="0" max="100" value="0" />
+            <span id="fBrightV" class="muted">any</span>
+          </label>
+        </div>
+      </div>
+
+      <div id="routeBar" class="route-bar hidden">
+        <div class="route-head">
+          <strong id="routeCount">0</strong> stops planned
+          <button id="routeClear" class="link">clear</button>
+        </div>
+        <div id="routeStats" class="muted"></div>
+        <button id="routeGo" class="route-go">Plan best route →</button>
+      </div>
+
+      <div id="list" class="list"></div>
+      <footer class="foot muted">
+        <span id="count">0</span> locations ·
+        <button id="routeMode" class="link">route mode</button> ·
+        <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">© OSM</a>
+      </footer>
+    </aside>
+
+    <main id="mapWrap">
+      <div id="map"></div>
+      <div id="detail" class="detail hidden"></div>
+    </main>
+  </div>
+
+  <!-- Capture / add modal -->
+  <div id="modal" class="modal hidden">
+    <div class="modal-card">
+      <button id="modalClose" class="modal-close">✕</button>
+      <h2>Capture a location</h2>
+      <p class="muted">Take or upload a photo. We read the GPS from the photo, analyze its color balance, and place it on the map. (AI category is stubbed for now — pick it below.)</p>
+
+      <div class="capture-row">
+        <button id="camBtn" class="cap">📷 Camera</button>
+        <label class="cap" for="fileInput">🖼 Upload photo</label>
+        <input id="fileInput" type="file" accept="image/*" capture="environment" hidden />
+      </div>
+
+      <video id="video" class="hidden" playsinline></video>
+      <button id="snapBtn" class="snap hidden">Snap</button>
+      <canvas id="canvas" class="hidden"></canvas>
+
+      <div id="preview" class="preview hidden">
+        <img id="previewImg" alt="preview" />
+        <div class="analysis">
+          <div id="paletteRow" class="palette-row"></div>
+          <div id="metrics" class="metrics"></div>
+          <div id="gpsInfo" class="muted"></div>
+        </div>
+      </div>
+
+      <div id="metaForm" class="meta-form hidden">
+        <input id="titleIn" placeholder="Title (e.g. Rooftop car park, north stair)" />
+        <select id="catIn"></select>
+        <div class="ll-row">
+          <input id="latIn" placeholder="lat" />
+          <input id="lngIn" placeholder="lng" />
+          <button id="pickBtn" class="link" type="button">pick on map</button>
+        </div>
+        <textarea id="notesIn" placeholder="Recommended for / notes…" rows="2"></textarea>
+        <button id="saveBtn" class="save">Save to map</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
